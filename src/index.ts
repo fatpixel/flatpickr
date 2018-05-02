@@ -27,6 +27,9 @@ import {
   createDateFormatter,
   duration,
   isBetween,
+  isBeginningOfDay,
+  isEndOfDay,
+  isDayBoundary,
 } from "./utils/dates";
 
 import { tokenRegex, monthToStr } from "./utils/formatting";
@@ -75,12 +78,14 @@ function FlatpickrInstance(
 
         return self.l10n.daysInMonth[month];
       },
+      isDayBoundary,
     };
   }
 
   function init() {
     self.element = self.input = element as HTMLInputElement;
     self.isOpen = false;
+    self.currentWidth = -1;
 
     parseConfig();
     setupLocale();
@@ -148,6 +153,10 @@ function FlatpickrInstance(
               ? self.weekWrapper.offsetWidth
               : 0) +
             "px";
+
+          if (self.currentWidth < 1) {
+            self.currentWidth = daysWidth;
+          }
 
           self.calendarContainer.style.removeProperty("visibility");
           self.calendarContainer.style.removeProperty("display");
@@ -1963,7 +1972,10 @@ function FlatpickrInstance(
         (acc: number, child: HTMLElement) => acc + child.offsetHeight,
         0
       ),
-      calendarWidth = self.calendarContainer.offsetWidth,
+      calendarWidth =
+        self.currentWidth > 0
+          ? self.currentWidth
+          : self.calendarContainer.offsetWidth,
       configPos = self.config.position.split(" "),
       configPosVertical = configPos[0],
       configPosHorizontal = configPos.length > 1 ? configPos[1] : null,
@@ -2676,6 +2688,10 @@ flatpickr.setDefaults = (config: Options) => {
 flatpickr.parseDate = createDateParser({});
 flatpickr.formatDate = createDateFormatter({});
 flatpickr.compareDates = compareDates;
+
+flatpickr.isBeginningOfDay = isBeginningOfDay;
+flatpickr.isEndOfDay = isEndOfDay;
+flatpickr.isDayBoundary = isDayBoundary;
 
 /* istanbul ignore next */
 if (typeof jQuery !== "undefined") {

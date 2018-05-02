@@ -70,7 +70,7 @@ export type Instance = Elements &
 
     currentYear: number;
     currentMonth: number;
-
+    currentWidth: number;
     isOpen: boolean;
     isMobile: boolean;
 
@@ -139,6 +139,7 @@ export type Instance = Elements &
     _positionCalendar: (customPositionElement?: HTMLElement) => void;
 
     utils: {
+      isDayBoundary: (date: Date) => boolean;
       getDaysInMonth: (month?: number, year?: number) => number;
     };
   };
@@ -158,6 +159,9 @@ export interface FlatpickrFn {
   ) => Date | undefined;
   formatDate: (date: Date, format: string) => string;
   compareDates: (date1: Date, date2: Date, timeless?: boolean) => number;
+  isBeginningOfDay: (date: Date) => boolean;
+  isEndOfDay: (date: Date) => boolean;
+  isDayBoundary: (date: Date) => boolean;
 }
 
 export type DayElement = HTMLSpanElement & { dateObj: Date; $i: number };

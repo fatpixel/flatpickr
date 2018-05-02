@@ -59,7 +59,8 @@ export const createDateParser = ({ config = defaults, l10n = english }) => (
     parsedDate = new Date(date);
   else if (typeof date === "string") {
     // date string
-    const format = givenFormat || (config || defaults).dateFormat;
+    const format =
+      givenFormat || (config || defaults).dateFormat || defaults.dateFormat;
     const datestr = String(date).trim();
 
     if (datestr === "today") {
@@ -142,6 +143,18 @@ export function compareTimes(date1: Date, date2: Date) {
     date1.getSeconds() -
     date2.getSeconds()
   );
+}
+
+export function isBeginningOfDay(date: Date) {
+  return date.getHours() === 0 && date.getMinutes() === 0;
+}
+
+export function isEndOfDay(date: Date) {
+  return date.getHours() === 23 && date.getMinutes() === 59;
+}
+
+export function isDayBoundary(date: Date) {
+  return isBeginningOfDay(date) || isEndOfDay(date);
 }
 
 export const getWeek = (givenDate: Date) => {
