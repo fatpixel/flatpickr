@@ -1,0 +1,121 @@
+$calendarBackground = #f9f9f9
+$calendarBorderColor = #C6E2FF
+
+$monthForeground = #5a6171
+$monthBackground = linear-gradient(to bottom,  #f2f9fe 0%,#d6f0fd 100%)
+
+$weekdaysBackground = #f9f9f9
+$weekdaysForeground = #004B91
+
+$dayForeground = #444444
+$dayHoverBackground = #e2e2e2
+$dayBorder = #cccccc
+$todayColor = #bbb
+
+$selectedDayBackground = #fbf5d0
+$selectedDayForeground = #363636
+
+$noCalendarBorder = false
+
+
+// calendar width calculation
+$dayWidth = 37px
+$dayHeight = 27.75px
+$padding = .2em
+$dayMargin = 2px
+//$daysWidth = ($daySize*7 + $dayMargin*14 + $padding*2 + 2)
+$daysWidth = 17rem
+$calendarWidth = $daysWidth
+
+$monthNavHeight = 38px
+$weekdaysHeight = 38px
+$timeHeight = 40px
+
+
+
+$calendarBackground = #fff
+$calendarBorderColor = #eee
+
+$monthForeground = #3c3f40
+$monthBackground = transparent
+
+$weekdaysBackground = transparent
+$weekdays_color = #757575
+
+$dayForeground = #404848
+$dayHoverBackground = #e9e9e9
+$disabled_border_color = $dayHoverBackground
+
+$disabled_day_color = alpha(black, 0.15)
+
+$todayColor = #F64747
+$today_fg_color = #fff
+
+$selectedDayBackground =  #4f99ff
+$selectedDayForeground = #fff
+
+
+@require "../flatpickr_xencall.styl"
+
+span.flatpickr-day.selected
+	font-weight bold
+	border 1px solid #f9dd34
+	
+
+.flatpickr-calendar
+	width $daysWidth
+
+.dayContainer
+	padding 0
+	border-right 0
+
+span.flatpickr-day
+	&, &.prevMonthDay, &.nextMonthDay
+		border-radius 0 !important
+		border 1px solid $dayHoverBackground
+		max-width none
+		border-right-color transparent
+		
+		&:nth-child(n+8)
+			border-top-color transparent
+		
+		&:nth-child(7n-6)
+			border-left 0
+		
+		&:nth-child(n+36)
+			border-bottom 0
+		
+		&:nth-child(-n+7)
+			margin-top 0
+		
+		&.today:not(.selected)
+			border-color $dayHoverBackground
+			border-right-color transparent
+			border-top-color transparent
+			border-bottom-color $todayColor
+			
+			&:hover
+				border 1px solid $todayColor
+		
+		&.startRange, &.endRange
+			border-color $selectedDayBackground
+		
+		
+		&.today, &.selected
+			z-index 2
+
+.rangeMode .flatpickr-day
+	margin-top -1px
+
+.flatpickr-weekwrapper .flatpickr-weeks
+	box-shadow none
+
+.flatpickr-weekwrapper span.flatpickr-day
+	border 0
+	margin -1px 0 0 -1px
+
+
+.hasWeeks .flatpickr-days
+	border-right 0
+
+	
