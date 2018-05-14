@@ -61,7 +61,12 @@
 
     &.open
       z-index 999
-      display block
+      display flex
+      flex-direction column
+      flex-wrap nowrap
+      justify-content flex-start
+      align-items stretch
+      align-content center
 
   &.multiMonth
     .flatpickr-days .dayContainer:nth-child(n+1)
@@ -171,10 +176,10 @@
     text-decoration none
     cursor pointer
     position absolute
-    top 0px
-    line-height 16px
+    top 0
+    line-height floor($monthNavHeight*0.58)
     height $monthNavHeight
-    padding 10px
+    padding 10px 5px
     z-index 3
 
     &.disabled
@@ -187,7 +192,7 @@
       /*!
       /*rtl:begin:ignore*//*
       */
-      left 0
+      left 42px
       /*!
       /*rtl:end:ignore*//*
       */
@@ -197,7 +202,7 @@
       /*!
       /*rtl:begin:ignore*//*
       */
-      right 0
+      right 42px
       /*!
       /*rtl:end:ignore*//*
       */
@@ -315,8 +320,8 @@
 
 
   .numInputWrapper
-    width 7ch
-    width unquote("7ch\0")
+    width 6ch
+    width unquote("6ch\0")
     display inline-block
 
     span.arrowUp:after

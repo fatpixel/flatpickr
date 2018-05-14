@@ -26,8 +26,11 @@ const paths = {
 };
 
 const customModuleNames: Record<string, string> = {
-  confirmDate: "confirmDatePlugin",
+  confirmDate: "flatpickrConfirmDatePlugin",
+  rangePlugin: "flatpickrRangePlugin",
   selectTime: "flatpickrSelectTimePlugin",
+  scrollPlugin: "flatpickrScrollPlugin",
+  closeButton: "flatpickrCloseButtonPlugin",
 };
 
 const watchers: chokidar.FSWatcher[] = [];

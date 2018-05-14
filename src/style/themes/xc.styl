@@ -1,4 +1,4 @@
-$calendarBackground = #fff
+$calendarBackground = #ffffff
 $calendarBorderColor = #a3d7e6
 $calendarBorderColor = #bedde6
 
@@ -15,100 +15,160 @@ $disabled_border_color = $dayHoverBackground
 $disabled_day_color = alpha(black, 0.15)
 
 $todayColor = #2bcc46
-$todayColorImage = linear-gradient(to bottom, $todayColor, saturate($todayColor, 3%) 50%, #44994411 50%, #ffffff44 120%)
+$todayColorImage = linear-gradient(to bottom, $todayColor, saturate($todayColor, 3%) 50%, #449944 11 50%, #ffffff44 120%)
 
 $today_fg_color = darken($todayColor, 40%)
 
 $selectedDayBackground = #4f99ff
-$selectedDayBackgroundImage = linear-gradient(to bottom, $selectedDayBackground, saturate($selectedDayBackground, 5%) 50%, #44449911 50%, #ffffff44 120%)
-$selectedDayForeground = #fff
+$selectedDayBackgroundImage = linear-gradient(to bottom, $selectedDayBackground, saturate($selectedDayBackground, 5%) 50%, #444499 11 50%, #ffffff44 120%)
+$selectedDayForeground = #ffffff
 
-
-$monthNavHeight = 38px
-$weekdaysHeight = 38px
+$monthNavHeight = 36px
+$weekdaysHeight = 36px
 $timeHeight = 40px
-
-
 
 @require "../flatpickr_xc.styl"
 
 .flatpickr-calendar
-	width $daysWidth
+  width $daysWidth
+
+.flatpickr-months
+  order 0
+
+.flatpickr-innerContainer
+  order 1
 
 .dayContainer
-	padding 0
-	border-right 0
+  padding 0
+  border-right 0
 
 span.flatpickr-day
-	&, &.prevMonthDay, &.nextMonthDay
-		border-radius 0 !important
-		border 1px solid $dayHoverBackground
-		max-width none
-		border-right-color transparent
-		
-		&:nth-child(n+8)
-			border-top-color transparent
+  &, &.prevMonthDay, &.nextMonthDay
+    border-radius 0 !important
+    border 1px solid $dayHoverBackground
+    max-width none
+    border-right-color transparent
 
-		&:nth-child(7n-6)
-			border-left 0
+    &:nth-child(n+8)
+      border-top-color transparent
 
-		&:nth-child(n+36)
-			border-bottom 0
-		
-		&:nth-child(-n+7)
-			margin-top 0
+    &:nth-child(7n-6)
+      border-left 0
 
-		&.today:not(.selected)
-			border-color $dayHoverBackground
-			border-right-color transparent
-			border-top-color transparent
-			border-bottom-color $todayColor
+    &:nth-child(n+36)
+      border-bottom 0
 
-			&:hover
-				border 1px solid $todayColor
-				border-top-color transparent
+    &:nth-child(-n+7)
+      margin-top 0
 
-		&.startRange, &.endRange
-			border-color $selectedDayBackground
+    &.today:not(.selected)
+      border-color $dayHoverBackground
+      border-right-color transparent
+      border-top-color transparent
+      border-bottom-color $todayColor
 
+      &:hover
+        border 1px solid $todayColor
+        border-top-color transparent
 
-		&.today, &.selected
-			z-index 2
+    &.startRange, &.endRange
+      border-color $selectedDayBackground
+
+    &.today, &.selected
+      z-index 2
 
 .rangeMode .flatpickr-day
-	margin-top -1px
+  margin-top -1px
 
 .flatpickr-weekwrapper .flatpickr-weeks
-	box-shadow none
+  box-shadow none
 
 .flatpickr-weekwrapper span.flatpickr-day
-	border 0
-	margin -1px 0 0 -1px
-
+  border 0
+  margin -1px 0 0 -1px
 
 .hasWeeks .flatpickr-days
-	border-right 0
+  border-right 0
 
-.flatpickr-time.unselected
-	display none
+.flatpickr-time
+  order 2
+
+  &.unselected
+    display none
 
 .flatpickr-selectTime
-	height 40px
-	max-height 0
-	visibility hidden
-	display flex
-	justify-content center
-	align-items center
-	cursor pointer
-	background rgba(0,0,0,0.06)
+  height 40px
+  max-height 0
+  visibility hidden
+  display flex
+  order 3
+  justify-content center
+  align-items center
+  cursor pointer
+  background rgba(0, 0, 0, 0.06)
 
-.flatpickr-selectTime svg path
-	fill inherit
+  svg
+    path
+      fill inherit
 
 .flatpickr-selectTime.darkTheme
-	color white
-	fill white
+  color white
+  fill white
 
 .flatpickr-selectTime.visible
-	max-height 40px
-	visibility visible
+  max-height 40px
+  visibility visible
+
+.flatpickr-selectTime__clear
+  height 16px
+  max-height 0
+  visibility hidden
+  display flex
+  justify-content center
+  align-items center
+  cursor pointer
+  background rgba(0, 0, 0, 0.06)
+
+.flatpickr-selectTime__clear
+  max-height 16px
+  visibility visible
+
+.flatpickr-confirm
+  height 40px
+  max-height 0px
+  visibility hidden
+  display flex
+  order 9
+  justify-content center
+  align-items center
+  cursor pointer
+  background rgba(0, 0, 0, 0.06)
+
+  svg
+    path
+      fill inherit
+
+  &.darkTheme
+    color white
+    fill white
+  &.visible
+    max-height 40px
+    visibility visible
+
+.flatpickr__close
+  display flex
+  order -1
+  overflow visible
+  max-height 16px
+  position relative
+  height 1px
+
+  span
+    cursor pointer
+    float right
+    height 20px
+    position absolute
+    right 4px
+    background #fff
+    color #a5a5a5
+    width 20px

@@ -13,7 +13,7 @@ export interface Config {
 const defaultConfig: Config = {
   selectTimeText: "Select Time... ",
   dateFormat: "m/d/Y",
-  datetimeFormat: "m/d/Y h:iK",
+  datetimeFormat: "m/d/Y", // "m/d/Y h:iK",
   showAlways: false,
   timeRequired: false,
   theme: "light",
@@ -22,6 +22,7 @@ const defaultConfig: Config = {
 function selectTimePlugin(pluginConfig: Config): Plugin {
   const config = { ...defaultConfig, ...pluginConfig };
   let selectTimeContainer: HTMLDivElement;
+  let clearTimeContainer: HTMLAnchorElement;
 
   return function(fp: Instance) {
     const setEnableTime = () => {
@@ -48,6 +49,7 @@ function selectTimePlugin(pluginConfig: Config): Plugin {
         } else if (e.key === "Enter" && e.target === selectTimeContainer)
           fp.close();
       },
+      /*
       onValueUpdate(selectedDates: Date[]) {
         fp.set(
           "dateFormat",
@@ -57,16 +59,24 @@ function selectTimePlugin(pluginConfig: Config): Plugin {
         );
         fp._input.value = fp.formatDate(selectedDates[0], fp.config.dateFormat);
       },
+      */
       onReady() {
         if (fp.timeContainer && !config.timeRequired) {
           fp.timeContainer.classList.add("unselected");
-          fp.set("dateFormat", config.dateFormat);
-          fp.setDate(fp.selectedDates, true, config.dateFormat);
+          // fp.set("dateFormat", config.dateFormat);
+          // fp.setDate(fp.selectedDates, true, config.dateFormat);
         }
         selectTimeContainer = fp._createElement<HTMLDivElement>(
           "div",
           `flatpickr-selectTime ${
             config.showAlways && !config.timeRequired ? "visible" : ""
+          } ${config.theme}Theme`,
+          config.selectTimeText
+        );
+        clearTimeContainer = fp._createElement<HTMLAnchorElement>(
+          "a",
+          `flatpickr-selectTime__clear ${
+            config.showAlways && !config.timeRequired ? "" : "visible"
           } ${config.theme}Theme`,
           config.selectTimeText
         );

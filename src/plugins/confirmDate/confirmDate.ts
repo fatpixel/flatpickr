@@ -41,7 +41,7 @@ function confirmDatePlugin(pluginConfig: Config): Plugin {
         );
 
         confirmContainer.tabIndex = -1;
-        confirmContainer.innerHTML += config.confirmIcon;
+        // confirmContainer.innerHTML += config.confirmIcon;
 
         confirmContainer.addEventListener("click", fp.close);
         fp.calendarContainer.appendChild(confirmContainer);
