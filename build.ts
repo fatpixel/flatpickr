@@ -1,6 +1,5 @@
 import * as fs from "fs-extra";
 import { exec as execCommand } from "child_process";
-
 import * as glob from "glob";
 
 import * as uglifyJS from "uglify-js";
@@ -14,6 +13,7 @@ import * as rollup_typescript from "rollup-plugin-typescript";
 import * as rollup_babel from "rollup-plugin-babel";
 
 import * as path from "path";
+const concat = require("concat");
 
 const pkg = require("./package.json");
 const version = `/* flatpickr v${pkg.version},, @license MIT */`;
@@ -110,7 +110,17 @@ async function buildScripts() {
   try {
     const transpiled = await fs.readFile("./dist/flatpickr.js");
     fs.writeFile("./dist/flatpickr.min.js", uglify(transpiled.toString()));
-    console.log("done.");
+    console.log("Scripts: done.");
+  } catch (e) {
+    logErr(e);
+  }
+}
+
+async function buildPlugins() {
+  try {
+    const transpiled = await fs.readFile("./dist/plugins.js");
+    fs.writeFile("./dist/plugins.min.js", uglify(transpiled.toString()));
+    console.log("Plugins: done.");
   } catch (e) {
     logErr(e);
   }
@@ -145,7 +155,14 @@ function buildExtras(folder: "plugins" | "l10n") {
       ...(css_paths.map(p => fs.copy(p, p.replace("src", "dist"))) as any),
     ]);
 
-    console.log("done.");
+    if (folder === "plugins") {
+      concat(
+        await resolveGlob(`./dist/${folder}/**/*.js`),
+        `./dist/plugins.js`
+      );
+    }
+
+    console.log("Extras: done.");
   };
 }
 
@@ -272,6 +289,7 @@ function start() {
     buildThemes();
     buildExtras("l10n")();
     buildExtras("plugins")();
+    buildPlugins();
   }
 
   //do something when app is closing
