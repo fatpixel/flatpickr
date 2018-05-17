@@ -5,15 +5,20 @@ export interface Config {
   selectTimeText?: string;
   dateFormat?: string;
   datetimeFormat?: string;
+  dateOnlyFieldId?: string;
+  dateOnlyClassName?: string;
   showAlways?: boolean;
   timeRequired?: boolean;
   theme?: string;
+  rangeStatus?: boolean | undefined;
 }
 
 const defaultConfig: Config = {
   selectTimeText: "Select Time... ",
   dateFormat: "m/d/Y",
-  datetimeFormat: "m/d/Y", // "m/d/Y h:iK",
+  datetimeFormat: "m/d/Y h:iK",
+  dateOnlyFieldId: "",
+  dateOnlyClassName: "dateonly",
   showAlways: false,
   timeRequired: false,
   theme: "light",
@@ -22,25 +27,84 @@ const defaultConfig: Config = {
 function selectTimePlugin(pluginConfig: Config): Plugin {
   const config = { ...defaultConfig, ...pluginConfig };
   let selectTimeContainer: HTMLDivElement;
-  let clearTimeContainer: HTMLAnchorElement;
+  let clearTimeContainer: HTMLDivElement;
+  let dateOnlyFlagElement: HTMLInputElement;
 
   return function(fp: Instance) {
     const setEnableTime = () => {
+      if (dateOnlyFlagElement) {
+        dateOnlyFlagElement.value = "0";
+      }
+      fp.selectedDates.map((sd: Date) => {
+        if (config.rangeStatus === true) {
+          sd.setHours(0, 0, 0);
+        }
+        if (config.rangeStatus === false) {
+          sd.setHours(23, 59, 59);
+        }
+        return sd;
+      });
       fp.set("enableTime", true);
       fp.set("dateFormat", config.datetimeFormat);
-      fp.setDate(fp.selectedDates, false, config.datetimeFormat);
+      fp.setDate(fp.selectedDates, true, config.datetimeFormat);
       fp.showTimeInput = true;
-      if (fp.timeContainer && !config.timeRequired) {
+
+      if (fp.timeContainer) {
         fp.timeContainer.classList.remove("unselected");
       }
+      clearTimeContainer.style.display = "";
+      clearTimeContainer.classList.add("visible");
       selectTimeContainer.style.display = "none";
+      selectTimeContainer.classList.remove("visible");
+      if (config.dateOnlyClassName) {
+        fp._input.classList.remove(config.dateOnlyClassName);
+      }
+    };
+    const setDisableTime = () => {
+      if (dateOnlyFlagElement) {
+        dateOnlyFlagElement.value = "1";
+      }
+      fp.selectedDates.map((sd: Date) => {
+        if (config.rangeStatus === true) {
+          sd.setHours(0, 0, 0);
+        }
+        if (config.rangeStatus === false) {
+          sd.setHours(23, 59, 59);
+        }
+        return sd;
+      });
+      fp.set("enableTime", false);
+      fp.set("dateFormat", config.dateFormat);
+      fp.setDate(fp.selectedDates, true, config.dateFormat);
+      fp.showTimeInput = false;
+      fp.redraw();
+      if (fp.timeContainer) {
+        fp.timeContainer.classList.add("unselected");
+      }
+      selectTimeContainer.style.display = "";
+      selectTimeContainer.classList.add("visible");
+      clearTimeContainer.style.display = "none";
+      clearTimeContainer.classList.add("visible");
+      if (config.dateOnlyClassName) {
+        fp._input.classList.add(config.dateOnlyClassName);
+      }
     };
     if (fp.config.noCalendar || fp.isMobile) return {};
     return {
       onParseConfig() {
-        if (config.timeRequired) {
-          fp.set("dateFormat", config.datetimeFormat);
+        if (
+          typeof config.dateOnlyFieldId === "string" &&
+          config.dateOnlyFieldId !== ""
+        ) {
+          dateOnlyFlagElement = window.document.getElementById(
+            config.dateOnlyFieldId
+          ) as HTMLInputElement;
         }
+
+        fp.set(
+          "dateFormat",
+          config.timeRequired ? config.datetimeFormat : config.dateFormat
+        );
       },
       onKeyDown(_: Date[], __: string, ___: Instance, e: KeyboardEvent) {
         if (fp.config.enableTime && e.key === "Tab" && e.target === fp.amPM) {
@@ -49,22 +113,9 @@ function selectTimePlugin(pluginConfig: Config): Plugin {
         } else if (e.key === "Enter" && e.target === selectTimeContainer)
           fp.close();
       },
-      /*
-      onValueUpdate(selectedDates: Date[]) {
-        fp.set(
-          "dateFormat",
-          fp.utils.isDayBoundary(selectedDates[0])
-            ? config.dateFormat
-            : config.datetimeFormat
-        );
-        fp._input.value = fp.formatDate(selectedDates[0], fp.config.dateFormat);
-      },
-      */
       onReady() {
         if (fp.timeContainer && !config.timeRequired) {
           fp.timeContainer.classList.add("unselected");
-          // fp.set("dateFormat", config.dateFormat);
-          // fp.setDate(fp.selectedDates, true, config.dateFormat);
         }
         selectTimeContainer = fp._createElement<HTMLDivElement>(
           "div",
@@ -73,17 +124,22 @@ function selectTimePlugin(pluginConfig: Config): Plugin {
           } ${config.theme}Theme`,
           config.selectTimeText
         );
-        clearTimeContainer = fp._createElement<HTMLAnchorElement>(
-          "a",
-          `flatpickr-selectTime__clear ${
-            config.showAlways && !config.timeRequired ? "" : "visible"
-          } ${config.theme}Theme`,
-          config.selectTimeText
-        );
 
         selectTimeContainer.tabIndex = -1;
         selectTimeContainer.addEventListener("click", setEnableTime);
         fp.calendarContainer.appendChild(selectTimeContainer);
+
+        clearTimeContainer = fp._createElement<HTMLDivElement>(
+          "div",
+          `flatpickr-selectTime__clear ${
+            config.showAlways && !config.timeRequired ? "" : "visible"
+          } ${config.theme}Theme`,
+          "Clear Time"
+        );
+
+        clearTimeContainer.tabIndex = -1;
+        clearTimeContainer.addEventListener("click", setDisableTime);
+        fp.calendarContainer.appendChild(clearTimeContainer);
       },
       ...(!config.showAlways
         ? {

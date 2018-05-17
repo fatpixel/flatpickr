@@ -97,7 +97,7 @@ span.flatpickr-day
     display none
 
 .flatpickr-selectTime
-  height 40px
+  height $timeHeight
   max-height 0
   visibility hidden
   display flex
@@ -116,7 +116,7 @@ span.flatpickr-day
   fill white
 
 .flatpickr-selectTime.visible
-  max-height 40px
+  max-height $timeHeight
   visibility visible
 
 .flatpickr-selectTime__clear
@@ -124,17 +124,21 @@ span.flatpickr-day
   max-height 0
   visibility hidden
   display flex
-  justify-content center
+  order 4
+  justify-content flex-end
   align-items center
   cursor pointer
-  background rgba(0, 0, 0, 0.06)
+  background #fff
+  border-radius 16px
+  font-size 11px
+  padding-right 11px
 
-.flatpickr-selectTime__clear
+.flatpickr-selectTime__clear.visible
   max-height 16px
   visibility visible
 
 .flatpickr-confirm
-  height 40px
+  height $timeHeight
   max-height 0px
   visibility hidden
   display flex
@@ -152,7 +156,7 @@ span.flatpickr-day
     color white
     fill white
   &.visible
-    max-height 40px
+    max-height $timeHeight
     visibility visible
 
 .flatpickr__close
