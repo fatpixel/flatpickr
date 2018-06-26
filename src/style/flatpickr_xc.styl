@@ -44,11 +44,16 @@
     visibility visible
 
   &.open
-    display inline-block
+    display flex // inline-block
+    flex-direction column
+    flex-wrap nowrap
+    justify-content flex-start
+    align-items stretch
+    align-content center
     z-index 99999
 
   &.animate.open
-    animation fpFadeInDown 400ms $bezier
+    animation fpFadeInDown 300ms $bezier
 
   &.inline
     display block
@@ -111,12 +116,12 @@
     content ''
     height 0
     width 0
-    left 33%
+    left 20%
 
   &.rightMost
     &:before, &:after
       left auto
-      right 33%
+      right 20%
 
   &:before
     border-width 5px
@@ -181,6 +186,8 @@
     height $monthNavHeight
     padding 10px 5px
     z-index 3
+    color $monthForeground
+    fill $monthForeground
 
     &.disabled
       display none
@@ -491,7 +498,6 @@ span.flatpickr-weekday
 
     &.endRange
       border-radius 0 50px 50px 0
-      //
 
     // Avoid adding extra fill because it overflows in multimonth mode
     &.startRange + .endRange:not(:nth-child(7n+1))
@@ -657,8 +663,9 @@ span.flatpickr-weekday
     text-align center
     font-weight 400
 
+  input, .flatpickr-am-pm
     &:hover, &:focus
-      background lighten($dayHoverBackground, 4)
+      background lighten($dayHoverBackground, 5)
 
 .flatpickr-input[readonly]
   cursor pointer

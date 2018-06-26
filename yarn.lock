@@ -3197,6 +3197,16 @@ mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+moment-parseplus@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/moment-parseplus/-/moment-parseplus-1.1.1.tgz#7b9881f44246d2123d37f97d77dffaf840295dce"
+  dependencies:
+    moment "^2.21.0"
+
+moment@^2.21.0, moment@^2.22.2:
+  version "2.22.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"

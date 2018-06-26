@@ -16,7 +16,10 @@
     "test:unit": "jest --config .jest.json",
     "coveralls": "jest --config .jest.json --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "moment": "^2.22.2",
+    "moment-parseplus": "^1.1.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.47",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.47",

@@ -1329,6 +1329,8 @@ function FlatpickrInstance(
 
       if (lostFocus && isIgnored) {
         self.close();
+        e.stopPropagation();
+        e.preventDefault();
 
         if (self.config.mode === "range" && self.selectedDates.length === 1) {
           self.clear(false);
@@ -2101,7 +2103,7 @@ function FlatpickrInstance(
     updateNavigationCurrentMonth();
     buildDays();
 
-    setDefaultHours();
+    // setDefaultHours();
     updateValue();
 
     if (self.config.enableTime)

@@ -43,6 +43,8 @@ interface RollupOptions {
 const rollupConfig: RollupOptions = {
   input: {
     input: "",
+    external: ["moment"],
+
     plugins: [
       rollup_typescript({
         // abortOnError: false,

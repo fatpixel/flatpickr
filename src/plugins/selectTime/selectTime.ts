@@ -26,6 +26,7 @@ const defaultConfig: Config = {
 
 function selectTimePlugin(pluginConfig: Config): Plugin {
   const config = { ...defaultConfig, ...pluginConfig };
+  let safetyNet: HTMLDivElement;
   let selectTimeContainer: HTMLDivElement;
   let clearTimeContainer: HTMLDivElement;
   let dateOnlyFlagElement: HTMLInputElement;
@@ -35,11 +36,21 @@ function selectTimePlugin(pluginConfig: Config): Plugin {
       if (dateOnlyFlagElement) {
         dateOnlyFlagElement.value = "0";
       }
-      fp.selectedDates.map((sd: Date) => {
-        if (config.rangeStatus === true) {
+      fp.selectedDates.map((sd: Date, index) => {
+        if (
+          (index === 0 &&
+            config.rangeStatus === false &&
+            fp.config.mode === "range") ||
+          config.rangeStatus === true
+        ) {
           sd.setHours(0, 0, 0);
         }
-        if (config.rangeStatus === false) {
+        if (
+          (index === 1 &&
+            config.rangeStatus === true &&
+            fp.config.mode === "range") ||
+          config.rangeStatus === false
+        ) {
           sd.setHours(23, 59, 59);
         }
         return sd;
@@ -89,6 +100,11 @@ function selectTimePlugin(pluginConfig: Config): Plugin {
         fp._input.classList.add(config.dateOnlyClassName);
       }
     };
+    const safetyClose = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      fp.close();
+    };
     if (fp.config.noCalendar || fp.isMobile) return {};
     return {
       onParseConfig() {
@@ -113,10 +129,31 @@ function selectTimePlugin(pluginConfig: Config): Plugin {
         } else if (e.key === "Enter" && e.target === selectTimeContainer)
           fp.close();
       },
+      onOpen() {
+        if (fp.calendarContainer.parentElement) {
+          safetyNet = fp._createElement<HTMLDivElement>(
+            "div",
+            "flatpickr-selectTime__safety-net"
+          );
+          safetyNet.tabIndex = -1;
+          safetyNet.addEventListener("click", safetyClose);
+          fp.calendarContainer.parentElement.insertBefore(
+            safetyNet,
+            fp.calendarContainer.parentElement.firstChild
+          );
+        }
+      },
+      onClose() {
+        if (fp.calendarContainer.parentElement && safetyNet) {
+          safetyNet.removeEventListener("click", safetyClose);
+          fp.calendarContainer.parentElement.removeChild(safetyNet);
+        }
+      },
       onReady() {
         if (fp.timeContainer && !config.timeRequired) {
           fp.timeContainer.classList.add("unselected");
         }
+
         selectTimeContainer = fp._createElement<HTMLDivElement>(
           "div",
           `flatpickr-selectTime ${
